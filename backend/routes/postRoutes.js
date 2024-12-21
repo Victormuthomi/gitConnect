@@ -8,21 +8,27 @@ const {
   likePost,
   dislikePost,
   commentPost,
-  GetPostWithComments,
+  getComments,
 } = require("../controllers/postController");
 
-router.route("/").get(getPosts).post(createPost);
+const { protect } = require("../middleware/authMiddleware");
 
-router
-  .route("/:id")
-  .put(updatePost)
-  .delete(deletePost)
-  .get(GetPostWithComments);
+//Route to get and post requests
+router.route("/").get(protect, getPosts).post(protect, createPost);
 
-router.route("/:id/like").post(likePost);
+//Route to update  and and delete post
+router.route("/:id").put(protect, updatePost).delete(protect, deletePost);
 
-router.route("/:id/dislike").post(dislikePost);
+//Route to like post
+router.route("/:id/like").post(protect, likePost);
 
-router.route("/:id/comment").post(commentPost);
+////Route to dislike post
+router.route("/:id/dislike").post(protect, dislikePost);
+
+//Route to comment post
+router.route("/:id/comment").post(protect, commentPost);
+
+////Route to get comments  post
+router.route("/:id/comments").get(protect, getComments);
 
 module.exports = router;

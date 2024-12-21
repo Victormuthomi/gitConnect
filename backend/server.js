@@ -12,8 +12,17 @@ connectDB();
 //create an express app
 const app = express();
 
-//routes for the profiles
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+//routes for the posts
 app.use("/api/posts", require("./routes/postRoutes"));
+
+//routes for the profile
+app.use("/api/profiles", require("./routes/profileRoutes"));
+
+//routes for the users
+app.use("/api/users", require("./routes/userRoutes"));
 
 //use the errorhandler middler
 app.use(errorHandler);

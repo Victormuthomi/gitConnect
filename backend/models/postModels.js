@@ -1,12 +1,33 @@
 const mongoose = require("mongoose");
 
-const postSchema = mongoose.Schema(
+const postSchema = new mongoose.Schema(
   {
-    text: { type: String, required: [true, "Please add text"] },
+    user: {
+      type: mongoose.Schema.Types.ObjectID,
+      required: true,
+      ref: "User",
+    },
 
-    //like: { type: Number, default: 0 },
-    //dislike: { type: Number, default: 0 },
-    //comments: [{ type: String, required: false }],
+    text: {
+      type: String,
+      required: [true, "Please add a text field"],
+    },
+    likes: {
+      type: Number,
+      default: 0,
+    },
+
+    dislikes: {
+      type: Number,
+      default: 0,
+    },
+
+    comments: [
+      {
+        type: String,
+        required: false,
+      },
+    ],
   },
   {
     timestamps: true,
@@ -14,7 +35,3 @@ const postSchema = mongoose.Schema(
 );
 
 module.exports = mongoose.model("Post", postSchema);
-
-//like: { type: Number, default: 0 },
-//  dislike: { type: Number, default: 0 },
-//comments: [{ type: String, required: false }],
