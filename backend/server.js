@@ -1,31 +1,35 @@
-//import all the depedencies
-const express = require("express");
-const colors = require("colors");
-const dotenv = require("dotenv").config();
-const connectDB = require("./config/db");
-const { errorHandler } = require("./middleware/errorMiddleware");
+// Import all the dependencies
+import express from "express";
+import colors from "colors";
+import dotenv from "dotenv";
+dotenv.config();
+import connectDB from "./config/db.js";
+import errorHandler from "./middleware/errorMiddleware.js";
+
+// Import routes
+import postRoutes from "./routes/postRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
+
 const port = process.env.PORT || 8000;
 
-//Call the connect db function
+// Call the connect DB function
 connectDB();
 
-//create an express app
+// Create an express app
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Middleware to handle incoming JSON and URL-encoded data
+app.use(express.json()); // For parsing application/json
+app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
 
-//routes for the posts
-app.use("/api/posts", require("./routes/postRoutes"));
+// Routes
+app.use("/api/posts", postRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/profiles", profileRoutes);
 
-//routes for the profile
-app.use("/api/profiles", require("./routes/profileRoutes"));
-
-//routes for the users
-app.use("/api/users", require("./routes/userRoutes"));
-
-//use the errorhandler middler
+// Use the error handler middleware (should come after the routes)
 app.use(errorHandler);
 
-//listen to a specified port in .env file
+// Listen to a specified port in the .env file
 app.listen(port, () => console.log(`Server started on port ${port}`));

@@ -1,26 +1,27 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express"; // Import express
+const router = express.Router(); // Use express.Router() directly
+
+import {
   viewUsers,
   registerUser,
   loginUser,
   getuser,
   updateUser,
   deleteUser,
-} = require("../controllers/userController");
+} from "../controllers/userController.js";
 
-const { protect } = require("../middleware/authMiddleware");
+import protect from "../middleware/authMiddleware.js";
 
-//Route to get and register users
+// Route to get and register users
 router.route("/").get(viewUsers).post(registerUser);
 
-//Route to login user
+// Route to login user
 router.route("/login").post(loginUser);
 
-//Route to get user data
+// Route to get user data
 router.route("/me").get(protect, getuser);
 
-//Route to update  and and delete profiles
+// Route to update and delete profiles
 router.route("/:id").put(protect, updateUser).delete(protect, deleteUser);
 
-module.exports = router;
+export default router;
